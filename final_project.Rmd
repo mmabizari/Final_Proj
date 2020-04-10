@@ -1,0 +1,51 @@
+---
+title: "NBA Draft Model Data Plan"
+name: "Mohamed Mabizari"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+library(tidyverse)
+library(dplyr)
+library(ggthemes)
+library(janitor)
+library(gt)
+library(rvest)
+library(fivethirtyeight)
+
+x <- read_csv("FPS/raw-data/NCAA_stats.csv")
+y <- read_csv("FPS/raw-data/Player List.csv")
+
+x %>%
+ left_join(y, by =c("Player"))
+
+```
+
+
+```{r echo=FALSE,message= FALSE}
+
+
+
+
+rebound <- x %>%
+  arrange(desc(RPG)) %>%
+  slice(1:12) %>%
+  rename( "TPP" = "FT%")
+
+RGG <- ggplot(rebound,
+       aes(x =PPG , y = TPP  , color = Player)) +
+        geom_point() +
+        labs(title = "NCAA Best Scoring Big Men",
+             subtitle = "NCAA Top 12 Rebounders",
+             caption = "Class of 2018-2019") +
+             xlab("Points Per Game") +
+             ylab("Free Throw Percentage") +
+             scale_x_continuous(limits=c(10,35))
+       
+
+
+
+```
+
+
